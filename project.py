@@ -1,29 +1,19 @@
-# ------------------------------------------------------------
-# calclex.py
-#
-# tokenizer for a simple expression evaluator for
-# numbers and +,-,*,/
-# ------------------------------------------------------------
 import ply.lex as lex
 
 # List of token names.   This is always required
 tokens = (
     'NUMBER',
+    'VARIABLE',
     'PLUS',
     'MINUS',
-    'TIMES',
-    'DIVIDE',
-    'LPAREN',
-    'RPAREN',
+    'CARAT'
 )
 
 # Regular expression rules for simple tokens
 t_PLUS = r'\+'
 t_MINUS = r'-'
-t_TIMES = r'\*'
-t_DIVIDE = r'/'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
+t_VARIABLE = r'[a-zA-Z]'
+t_CARAT = r'\^'
 
 # A regular expression rule with some action code
 
@@ -57,8 +47,7 @@ lexer = lex.lex()
 
 # Test it out
 data = '''
-3 + 4 * 10
-  + -20 *2
+2x^2+4x - 5 %
 '''
 
 # Give the lexer some input
