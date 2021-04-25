@@ -1,4 +1,4 @@
-import ply.lex as lex
+import ply.lex as lex, yacc
 import cmath as math
 
 # List of token names.   This is always required
@@ -122,4 +122,14 @@ def p_expr_term0(t):
     quad['sol1'] = (-b - math.sqrt((b**2) - (4 * a * c)) / (2 * a))
     quad['sol2'] = (-b + math.sqrt((b**2) - (4 * a * c)) / (2 * a))
 
-    
+def p_error(t):
+    print(f"Syntax error at '{t.value}'")
+
+parser = yacc.yacc()
+
+while True:
+    try:
+        w = input('>')
+    except EOFError:
+        break
+    parser.parse(w)
