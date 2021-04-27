@@ -1,4 +1,4 @@
-import ply.lex as lex, yacc
+from ply import lex, yacc
 import cmath as math
 
 # List of token names.   This is always required
@@ -27,7 +27,11 @@ t_CARAT = r'\^'
 
 def t_NUMBER(t):
     r'\d+'
-    t.value = int(t.value)
+    try:
+        t.value = int(t.value)
+    except ValueError:
+        print("Integer value too large %d", t.value)
+        t.value = 0
     return t
 
 # Define a rule so we can track line numbers
