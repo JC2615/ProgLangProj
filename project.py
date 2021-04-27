@@ -1,4 +1,4 @@
-import ply.lex as lex, ply.yacc as yacc
+from ply import lex, yacc
 import cmath as math
 
 # List of token names.   This is always required
@@ -10,7 +10,8 @@ tokens = (
     'VARIABLE',
     'PLUS',
     'MINUS',
-    'CARAT'
+    'CARAT', 
+    'SIGN'
 )
 
 # Regular expression rules for simple tokens
@@ -21,9 +22,9 @@ t_PLUS = r'\+'
 t_MINUS = r'-'
 t_VARIABLE = r'[a-zA-Z]'
 t_CARAT = r'\^'
+t_SIGN = r'\+|-'
 
 # A regular expression rule with some action code
-
 
 def t_NUMBER(t):
     r'\d+'
@@ -65,32 +66,71 @@ lexer = lex.lex()
 
 quad={}
 
-def p_empty(t):
-     'empty :'
-     pass
+
 
 def p_expr(t):
-    '''expr : term2 term1 term0'''
+    '''expr : term2 term1 term0
+    '''
     print(f'Solution 1 : {quad["sol1"]}')
     print(f'Solution 2 : {quad["sol2"]}')
+
+def p_expr_term21(t):
+    '''term21 : VARIABLE CARAT TWO
+            | MINUS VARIABLE CARAT TWO
+            | PLUS VARIABLE CARAT TWO'''
+    
+    if (t[1] == '-'):
+        quad['a'] = -1
+    else:
+        quad['a'] = 1
+
     
 def p_expr_term2(t):
     '''term2 : PLUS NUMBER VARIABLE CARAT TWO
             | MINUS NUMBER VARIABLE CARAT TWO
-            | NUMBER VARIABLE CARAT TWO'''
+            | NUMBER VARIABLE CARAT TWO
+            | term21'''
     
     if (t[1] == '+'):
         quad['a'] = t[2]
     elif(t[1] == '-'):
-        quad['a'] = t[2] - (2 * t[2])
+        quad['a'] = t[2] * -1
     else:
         quad['a'] = t[1]
 
+def p_expr_term11(t):
+    '''term11 : CARAT ONE
+            | empty
+            '''
+    
+    if (t[1].type == 'CARAT' and t[2].type == 'ONE'):
+        pass
+
+def p_expr_term13(t):
+    '''term13 : NUMBER VARIABLE
+            | VARIABLE
+            '''
+    
+    if (t[1].type == 'NUMBER'):
+        quad['b'] = t[1]
+    else:
+        quad['b'] = 1
+
+def p_expr_term14(t):
+    '''term14 : MINUS VARIABLE
+            | PLUS VARIABLE
+            '''
+    
+    if (t[1] == '-'):
+        quad['b'] = -1
+    else:
+        quad['b'] = 1
+
 def p_expr_term1(t):
-    '''term1 : PLUS NUMBER VARIABLE CARAT ONE
-            | MINUS NUMBER VARIABLE CARAT ONE
-            | PLUS NUMBER VARIABLE
-            | MINUS NUMBER VARIABLE
+    '''term1 : PLUS NUMBER VARIABLE term11
+            | MINUS NUMBER VARIABLE term11
+            | term13
+            | term14
             | empty'''
     
     if (t[1] == '+'):
@@ -120,6 +160,10 @@ def p_expr_term0(t):
 
     quad['sol1'] = (-b - math.sqrt((b**2) - (4 * a * c)) / (2 * a))
     quad['sol2'] = (-b + math.sqrt((b**2) - (4 * a * c)) / (2 * a))
+
+def p_empty(t):
+     'empty :'
+     pass
 
 def p_error(t):
     print(f"Syntax error at '{t.value}'")
