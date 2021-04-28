@@ -7,7 +7,7 @@ Joshua created the alphabet, language, and lexer. James worked primarily on the 
 {var: Variable name [a-z][A-Z], num: Integer [0-9][0-9]*, op: operators [+ | - | ^]}
 
 # Language
-Input will have no spaces and follow this format exactly: {op}{num}{op}{var}{op}{num}{var}{op}{num} 
+Input will and follow this format, allowing for spaces: {op}{num}{op}{var}{op}{num}{var}{op}{num} 
 Assuming the terms are in order
 
 # Grammar
