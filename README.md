@@ -15,8 +15,22 @@ Assuming the terms are in order
 
 
 
-Modified Grammar
-![Modified grammar](https://user-images.githubusercontent.com/39973276/116420382-ebda7000-a80b-11eb-9c06-0888cf1072c3.jpg)
+Modified Grammar:
+```
+<expr>        -> <term2>  <term1>  <term0>
+<term2>       ->  <sign>  <number>  <variable>  <karat>  <two>
+<term1>       ->  <sign>  <number>  <variable>  <term1a>
+<term1a>      ->  <karat>  <one> |  𝛆
+<term0>       ->  <sign>  <number>  <term0a>
+<term0a>      ->  <variable>  <karat>  <zero> | 𝛆
+<sign>        ->  “+” | “-”
+<number>      ->  <number> <number> | <number> 𝛆 | “0” | “1” | “2” | “3” | “4” | “5” | “6” | “7” | “8” | “9”
+<variable>    -> “x”
+<karat>       ->  “^”
+<two>         ->  “2”
+<one>         ->  “1”
+<zero>        ->  “0”
+```
 
 # Program and Testing
 ![image](https://user-images.githubusercontent.com/39973276/116469022-9a4bd880-a83f-11eb-8367-ab2e9e422a4a.png)
