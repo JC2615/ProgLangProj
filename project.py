@@ -57,15 +57,15 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test it out
-data = '''
-2x^2+4x - 5 %
-'''
+# data = '''
+# 2x^2+4x - 5 %
+# '''
 
 # Give the lexer some input
-lexer.input(data)
+# lexer.input(data)
 
-for tok in lexer:
-    print(tok.type, tok.value, tok.lineno, tok.lexpos)
+# for tok in lexer:
+#     print(tok.type, tok.value, tok.lineno, tok.lexpos)
 
 quad={}
 
@@ -74,13 +74,12 @@ def p_empty(t):
      pass
 
 def p_expr(t):
-    'expr : term2 term1 term0'
+    '''expr : term2 term1 term0'''
     print(f'Solution 1 : {quad["sol1"]}')
     print(f'Solution 2 : {quad["sol2"]}')
     
-
 def p_expr_term2(t):
-    '''term2: PLUS NUMBER VARIABLE CARAT TWO
+    '''term2 : PLUS NUMBER VARIABLE CARAT TWO
             | MINUS NUMBER VARIABLE CARAT TWO
             | NUMBER VARIABLE CARAT TWO'''
     
@@ -92,7 +91,7 @@ def p_expr_term2(t):
         quad['a'] = t[1]
 
 def p_expr_term1(t):
-    '''term1: PLUS NUMBER VARIABLE CARAT ONE
+    '''term1 : PLUS NUMBER VARIABLE CARAT ONE
             | MINUS NUMBER VARIABLE CARAT ONE
             | PLUS NUMBER VARIABLE
             | MINUS NUMBER VARIABLE
@@ -106,7 +105,7 @@ def p_expr_term1(t):
         quad['b'] = 0
 
 def p_expr_term0(t):
-    '''term1: PLUS NUMBER VARIABLE CARAT ZERO
+    '''term0 : PLUS NUMBER VARIABLE CARAT ZERO
             | MINUS NUMBER VARIABLE CARAT ZERO
             | PLUS NUMBER
             | MINUS NUMBER
@@ -128,6 +127,7 @@ def p_expr_term0(t):
 
 def p_error(t):
     print(f"Syntax error at '{t.value}'")
+    print(t)
 
 parser = yacc.yacc()
 
