@@ -32,6 +32,11 @@ Modified Grammar:
 <zero>        ->  “0”
 ```
 
+# Parse Tree
+Here is an example of the parse tree that would be created if we gave the input `+2x^2+4x - 4 `
+![image](https://user-images.githubusercontent.com/39973276/116474269-4b557180-a846-11eb-9ea4-8c0fffa2c370.png)
+
+
 # Program and Testing
 ![image](https://user-images.githubusercontent.com/39973276/116469022-9a4bd880-a83f-11eb-8367-ab2e9e422a4a.png)
 To run, we simply enter a valid quadratic equation, like the ones below, then the program will display its roots.
