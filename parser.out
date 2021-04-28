@@ -1,57 +1,228 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
+Unused terminals:
+
+    MINUS
+    PLUS
+
 Grammar
 
-Rule 0     S' -> empty
-Rule 1     empty -> <empty>
-Rule 2     expr -> term2 term1 term0
-Rule 3     term2 -> PLUS NUMBER VARIABLE CARAT TWO
-Rule 4     term2 -> MINUS NUMBER VARIABLE CARAT TWO
-Rule 5     term2 -> NUMBER VARIABLE CARAT TWO
-Rule 6     term1 -> PLUS NUMBER VARIABLE CARAT ONE
-Rule 7     term1 -> MINUS NUMBER VARIABLE CARAT ONE
-Rule 8     term1 -> PLUS NUMBER VARIABLE
-Rule 9     term1 -> MINUS NUMBER VARIABLE
-Rule 10    term1 -> empty
-Rule 11    term0 -> PLUS NUMBER VARIABLE CARAT ZERO
-Rule 12    term0 -> MINUS NUMBER VARIABLE CARAT ZERO
-Rule 13    term0 -> PLUS NUMBER
-Rule 14    term0 -> MINUS NUMBER
-Rule 15    term0 -> empty
+Rule 0     S' -> expr
+Rule 1     expr -> term2 term1 term0
+Rule 2     term2 -> SIGN NUMBER VARIABLE CARAT NUMBER
+Rule 3     term1a -> CARAT NUMBER
+Rule 4     term1a -> empty
+Rule 5     term1 -> SIGN NUMBER VARIABLE term1a
+Rule 6     term0a -> VARIABLE CARAT NUMBER
+Rule 7     term0a -> empty
+Rule 8     term0 -> SIGN NUMBER term0a
+Rule 9     empty -> <empty>
 
 Terminals, with rules where they appear
 
-CARAT                : 3 4 5 6 7 11 12
-MINUS                : 4 7 9 12 14
-NUMBER               : 3 4 5 6 7 8 9 11 12 13 14
-ONE                  : 6 7
-PLUS                 : 3 6 8 11 13
-TWO                  : 3 4 5
-VARIABLE             : 3 4 5 6 7 8 9 11 12
-ZERO                 : 11 12
+CARAT                : 2 3 6
+MINUS                : 
+NUMBER               : 2 2 3 5 6 8
+PLUS                 : 
+SIGN                 : 2 5 8
+VARIABLE             : 2 5 6
 error                : 
 
 Nonterminals, with rules where they appear
 
-empty                : 10 15 0
-expr                 : 
-term0                : 2
-term1                : 2
-term2                : 2
+empty                : 4 7
+expr                 : 0
+term0                : 1
+term0a               : 8
+term1                : 1
+term1a               : 5
+term2                : 1
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . empty
-    (1) empty -> .
+    (0) S' -> . expr
+    (1) expr -> . term2 term1 term0
+    (2) term2 -> . SIGN NUMBER VARIABLE CARAT NUMBER
 
-    $end            reduce using rule 1 (empty -> .)
+    SIGN            shift and go to state 3
 
-    empty                          shift and go to state 1
+    expr                           shift and go to state 1
+    term2                          shift and go to state 2
 
 state 1
 
-    (0) S' -> empty .
+    (0) S' -> expr .
 
+
+
+state 2
+
+    (1) expr -> term2 . term1 term0
+    (5) term1 -> . SIGN NUMBER VARIABLE term1a
+
+    SIGN            shift and go to state 5
+
+    term1                          shift and go to state 4
+
+state 3
+
+    (2) term2 -> SIGN . NUMBER VARIABLE CARAT NUMBER
+
+    NUMBER          shift and go to state 6
+
+
+state 4
+
+    (1) expr -> term2 term1 . term0
+    (8) term0 -> . SIGN NUMBER term0a
+
+    SIGN            shift and go to state 8
+
+    term0                          shift and go to state 7
+
+state 5
+
+    (5) term1 -> SIGN . NUMBER VARIABLE term1a
+
+    NUMBER          shift and go to state 9
+
+
+state 6
+
+    (2) term2 -> SIGN NUMBER . VARIABLE CARAT NUMBER
+
+    VARIABLE        shift and go to state 10
+
+
+state 7
+
+    (1) expr -> term2 term1 term0 .
+
+    $end            reduce using rule 1 (expr -> term2 term1 term0 .)
+
+
+state 8
+
+    (8) term0 -> SIGN . NUMBER term0a
+
+    NUMBER          shift and go to state 11
+
+
+state 9
+
+    (5) term1 -> SIGN NUMBER . VARIABLE term1a
+
+    VARIABLE        shift and go to state 12
+
+
+state 10
+
+    (2) term2 -> SIGN NUMBER VARIABLE . CARAT NUMBER
+
+    CARAT           shift and go to state 13
+
+
+state 11
+
+    (8) term0 -> SIGN NUMBER . term0a
+    (6) term0a -> . VARIABLE CARAT NUMBER
+    (7) term0a -> . empty
+    (9) empty -> .
+
+    VARIABLE        shift and go to state 15
+    $end            reduce using rule 9 (empty -> .)
+
+    term0a                         shift and go to state 14
+    empty                          shift and go to state 16
+
+state 12
+
+    (5) term1 -> SIGN NUMBER VARIABLE . term1a
+    (3) term1a -> . CARAT NUMBER
+    (4) term1a -> . empty
+    (9) empty -> .
+
+    CARAT           shift and go to state 18
+    SIGN            reduce using rule 9 (empty -> .)
+
+    term1a                         shift and go to state 17
+    empty                          shift and go to state 19
+
+state 13
+
+    (2) term2 -> SIGN NUMBER VARIABLE CARAT . NUMBER
+
+    NUMBER          shift and go to state 20
+
+
+state 14
+
+    (8) term0 -> SIGN NUMBER term0a .
+
+    $end            reduce using rule 8 (term0 -> SIGN NUMBER term0a .)
+
+
+state 15
+
+    (6) term0a -> VARIABLE . CARAT NUMBER
+
+    CARAT           shift and go to state 21
+
+
+state 16
+
+    (7) term0a -> empty .
+
+    $end            reduce using rule 7 (term0a -> empty .)
+
+
+state 17
+
+    (5) term1 -> SIGN NUMBER VARIABLE term1a .
+
+    SIGN            reduce using rule 5 (term1 -> SIGN NUMBER VARIABLE term1a .)
+
+
+state 18
+
+    (3) term1a -> CARAT . NUMBER
+
+    NUMBER          shift and go to state 22
+
+
+state 19
+
+    (4) term1a -> empty .
+
+    SIGN            reduce using rule 4 (term1a -> empty .)
+
+
+state 20
+
+    (2) term2 -> SIGN NUMBER VARIABLE CARAT NUMBER .
+
+    SIGN            reduce using rule 2 (term2 -> SIGN NUMBER VARIABLE CARAT NUMBER .)
+
+
+state 21
+
+    (6) term0a -> VARIABLE CARAT . NUMBER
+
+    NUMBER          shift and go to state 23
+
+
+state 22
+
+    (3) term1a -> CARAT NUMBER .
+
+    SIGN            reduce using rule 3 (term1a -> CARAT NUMBER .)
+
+
+state 23
+
+    (6) term0a -> VARIABLE CARAT NUMBER .
+
+    $end            reduce using rule 6 (term0a -> VARIABLE CARAT NUMBER .)
 

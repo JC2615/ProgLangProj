@@ -1,26 +1,31 @@
 from ply import lex, yacc
 import cmath as math
 
+''' 
+expr : term2 term1 term0
+term2 : SIGN NUMBER VARIABLE CARAT 2
+term1 : SIGN NUMBER VARIABLE term1a
+term1a : CARAT 1 | empty
+term0 : SIGN NUMBER term0a
+term0a : VARIABLE CARAT 0 | empty
+'''
+
 # List of token names.   This is always required
 tokens = (
-    'ZERO',
-    'ONE',
-    'TWO',
     'NUMBER',
     'VARIABLE',
     'PLUS',
     'MINUS',
-    'CARAT'
+    'CARAT',
+    'SIGN'
 )
 
 # Regular expression rules for simple tokens
-t_ZERO = r'0'
-t_ONE = r'1'
-t_TWO = r'2'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_VARIABLE = r'[a-zA-Z]'
 t_CARAT = r'\^'
+t_SIGN = r'-|\+'
 
 # A regular expression rule with some action code
 
@@ -69,54 +74,74 @@ lexer = lex.lex()
 
 quad={}
 
-def p_empty(t):
-     'empty :'
-     pass
+
 
 def p_expr(t):
     '''expr : term2 term1 term0'''
     print(f'Solution 1 : {quad["sol1"]}')
     print(f'Solution 2 : {quad["sol2"]}')
-    
+
 def p_expr_term2(t):
-    '''term2 : PLUS NUMBER VARIABLE CARAT TWO
-            | MINUS NUMBER VARIABLE CARAT TWO
-            | NUMBER VARIABLE CARAT TWO'''
-    
-    if (t[1] == '+'):
-        quad['a'] = t[2]
-    elif(t[1] == '-'):
-        quad['a'] = t[2] - (2 * t[2])
+    '''term2 : SIGN NUMBER VARIABLE CARAT NUMBER'''
+
+    if (t[5] == 2):
+        if (t[1] == '+'):
+            quad['a'] = t[2]
+        elif(t[1] == '-'):
+            quad['a'] = t[2] * -1
     else:
-        quad['a'] = t[1]
+        #throw some error?
+        quad['a'] = -1
+    
+def p_expr_term1a(t):
+    '''term1a : CARAT NUMBER
+            | empty'''
+
+    if (t[1] == '^'):
+        if(t[2] == '1'):
+            pass
+    else:
+        #error?
+        pass
+        #quad['b'] = -1
 
 def p_expr_term1(t):
-    '''term1 : PLUS NUMBER VARIABLE CARAT ONE
-            | MINUS NUMBER VARIABLE CARAT ONE
-            | PLUS NUMBER VARIABLE
-            | MINUS NUMBER VARIABLE
-            | empty'''
+    '''term1 : SIGN NUMBER VARIABLE term1a'''
     
     if (t[1] == '+'):
         quad['b'] = t[2]
     elif(t[1] == '-'):
-        quad['b'] = t[2] - 2 * t[2]
-    else:
+        quad['b'] = t[2] * -1
+    elif(t[1] == ''):
         quad['b'] = 0
+    else:
+        #throw some error?
+        quad['b'] = -1
 
+def p_expr_term0a(t):
+    '''term0a : VARIABLE CARAT NUMBER
+            | empty '''
+
+    if (t[1] == 'x'):
+        if(t[3] == '0'):
+            pass
+    else:
+        #error?
+        pass
+        #quad['c'] = -1
+    
 def p_expr_term0(t):
-    '''term0 : PLUS NUMBER VARIABLE CARAT ZERO
-            | MINUS NUMBER VARIABLE CARAT ZERO
-            | PLUS NUMBER
-            | MINUS NUMBER
-            | empty'''
+    '''term0 : SIGN NUMBER term0a'''
     
     if (t[1] == '+'):
         quad['c'] = t[2]
     elif(t[1] == '-'):
-        quad['c'] = t[2] - 2 * t[2]
-    else:
+        quad['c'] = t[2] * -1
+    elif (t[1] == ''):
         quad['c'] = 0
+    else:
+        #throw some error?
+        quad['c'] = -1
 
     a = quad['a']
     b = quad['b']
@@ -128,6 +153,10 @@ def p_expr_term0(t):
 def p_error(t):
     print(f"Syntax error at '{t.value}'")
     print(t)
+
+def p_empty(t):
+    'empty :'
+    pass
 
 parser = yacc.yacc()
 
