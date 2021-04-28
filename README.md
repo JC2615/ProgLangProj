@@ -1,5 +1,4 @@
-# ProgLangProj
-Project for Organization of Programming Languages
+# Organization of Programming Languages Final Project
 
 # Work Distribution
 Joshua created the alphabet, language, and lexer. James worked primarily on the grammar and parser.
@@ -20,5 +19,9 @@ Modified Grammar
 ![Modified grammar](https://user-images.githubusercontent.com/39973276/116420382-ebda7000-a80b-11eb-9c06-0888cf1072c3.jpg)
 
 # Program and Testing
-We tested the program with the input `2x^2+4x-5` but after repeated troubleshooting we were still unable to get it to parse correctly:
-![image](https://user-images.githubusercontent.com/39973276/116422085-648dfc00-a80d-11eb-8eb6-7477060aa455.png)
+![image](https://user-images.githubusercontent.com/39973276/116469022-9a4bd880-a83f-11eb-8367-ab2e9e422a4a.png)
+To run, we simply enter a valid quadratic equation, like the ones below, then the program will display its roots.
+We tested the program with these inputs and you are able to see the output in the screenshot above:
+- `+2x^2+4x-4` (valid input)
+- `-5x^2-3+17` (invalid input, displays error)
+- `-5x^2-3x+17` (valid input)
